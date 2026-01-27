@@ -22,11 +22,10 @@ const UserSchema = new Schema({
 });
 
 // Pre-save hook to hash passwords before saving to DB
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function() {
     if (this.isModified('password')) {
         this.password = await bcrypt.hash(this.password, 10);
     }
-    next();
 });
 
 mongoose.model('User', UserSchema);
