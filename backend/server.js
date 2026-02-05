@@ -4,6 +4,7 @@ const mongoose = require('./config/mongoose');
 const express = require('express');
 const cors = require('cors');
 
+
 // Initialize Mongoose connection
 const db = mongoose();
 
@@ -17,8 +18,10 @@ app.use(cookieParser()); // Required for HTTPOnly cookies
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow your Vite frontend
+    credentials: true                // Allow cookies to be sent/received
+}));
 // Load Models (Requirement: Correct models and config files) [cite: 88]
 require('./models/game.server.model');
 require('./models/user.server.model');
