@@ -64,3 +64,20 @@ exports.logout = (req, res) => {
     res.clearCookie('token');
     res.status(200).json({ message: "Logged out successfully" });
 };
+
+exports.getMe = async (req, res) => {
+    try {
+        // req.user.id is populated by the auth middleware
+        const user = await User.findById(req.user.id).select('-password'); // Exclude password
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.status(200).json({ 
+            userId: user._id, 
+            username: user.username,
+            games: user.games
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};

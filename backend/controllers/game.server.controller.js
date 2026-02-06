@@ -25,10 +25,11 @@ exports.create = async (req, res) => {
 // Add a game to a User's personal collection [Requirement: Add games]
 exports.addToUserCollection = async (req, res) => {
     try {
-        const { userId, gameId } = req.body;
-        // Use $addToSet to prevent duplicate games in the collection
+        const { gameId } = req.body; // Frontend only sends gameId now
+        
+        // Use req.user.id from the auth middleware
         const user = await User.findByIdAndUpdate(
-            userId, 
+            req.user.id, 
             { $addToSet: { games: gameId } }, 
             { new: true }
         ).populate('games');
@@ -73,5 +74,20 @@ exports.getGameById = async (req, res) => {
         res.status(200).json(game);
     } catch (err) {
         res.status(400).json({ error: "Invalid Game ID" });
+    }
+};
+
+// Update a game
+exports.updateGame = async (req, res) => {
+    try {
+        const game = await Game.findByIdAndUpdate(
+            req.params.gameId, 
+            req.body, 
+            { new: true } // Return the updated document
+        );
+        if (!game) return res.status(404).json({ error: "Game not found" });
+        res.status(200).json(game);
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
 };
