@@ -1,11 +1,20 @@
-// backend/config/mongoose.js
-const mongoose = require('mongoose');
-const config = require('./config');
+// config/mongoose.js
+import mongoose from 'mongoose';
+import config from './config.js';
 
-module.exports = function() {
-    mongoose.connect(config.mongoUri)
-        .then(() => console.log('MongoDB connected successfully'))
-        .catch(err => console.error('MongoDB connection error:', err));
-    
-    return mongoose.connection;
-};
+const connectDB = async () => {
+    // Allow queries to include fields not present in the Schema
+    mongoose.set('strictQuery', false);
+
+    // Connect to MongoDB using the URI from config
+    try{
+        const conn = await mongoose.connect(config.mongoDBUri, {
+            useNewUrlParser: true, // modern mongoDB connection string parser
+            useUnifiedTopology: true, // unified topology engine for better connection handling
+        });
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.error(`Error connecting to MongoDB: ${error.message}`);
+        process.exit(1); // Exit process with failure
+    }
+}
