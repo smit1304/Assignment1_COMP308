@@ -1,8 +1,10 @@
-// backend/config/config.js
-require('dotenv').config();
+import 'dotenv/config';
 
-module.exports = {
-    port: process.env.PORT || 5000,
-    mongoUri: process.env.MONGODB_URI,
-    secretKey: process.env.JWT_SECRET
-};
+const config = {
+    env: process.env.NODE_ENV || 'development', // Environment (development, production, etc.)
+    port: process.env.PORT || 3000, // Server port
+    jwtSecret: process.env.JWT_SECRET || "Your_Secret_Key", // Secret key for JWT
+    mongoDBUri: process.env.MONGODB_URI || "mongodb://localhost:27017/gameLibraryDB" // DB connection string
+}
+
+export default config;
