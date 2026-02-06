@@ -1,3 +1,5 @@
+// Defines the Game model using Mongoose
+
 import mongoose from 'mongoose';
 
 const GameSchema = new mongoose.Schema({

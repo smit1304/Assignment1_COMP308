@@ -1,93 +1,124 @@
-// backend/controllers/game.server.controller.js
-const Game = require('mongoose').model('Game');
-const User = require('mongoose').model('User');
+// Definng the controller functions for game-related operations
 
-// List all games in the system [Requirement: List all available games]
-exports.listAll = async (req, res) => {
+import Game from '../models/game.server.model.js';
+import User from '../models/user.server.model.js';
+
+
+// List all games
+listAllGames = async (req, res) => {
     try {
         const games = await Game.find({});
         res.status(200).json(games);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(500).json({ error: 'Server error while fetching games', details: err.message });
     }
 };
 
-// Create a game in the system (Admin/General tool)
-exports.create = async (req, res) => {
+// Create a game
+createGame = async (req, res) => {
     try {
         const game = await Game.create(req.body);
         res.status(201).json(game);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        console.error(err);
+        res.status(400).json({ error: 'Failed to create game', details: err.message });
     }
 };
 
-// Add a game to a User's personal collection [Requirement: Add games]
-exports.addToUserCollection = async (req, res) => {
+// Add a game to a User's personal collection
+addGameToUserCollection = async (req, res) => {
     try {
-        const { gameId } = req.body; // Frontend only sends gameId now
+        const { gameId } = req.body;
+        if(!gameId) {
+            return res.status(400).json({ error: "Game ID is required" });
+        }
         
         // Use req.user.id from the auth middleware
         const user = await User.findByIdAndUpdate(
             req.user.id, 
             { $addToSet: { games: gameId } }, 
             { new: true }
-        ).populate('games');
+        ).populate('games', '-__v');
         
         res.status(200).json(user.games);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        console.error(err);
+        res.status(400).json({ error: 'Failed to add game to collection', details: err.message });
     }
 };
 
-// Get current user's collection [Requirement: Display game details in user's collection]
-exports.getUserCollection = async (req, res) => {
+// Get current user's collection
+getUserCollection = async (req, res) => {
     try {
-        const user = await User.findById(req.user.id).populate('games');
+        const user = await User.findById(req.user.id).populate('games', '-__v');
+        if(!user) return res.status(404).json({ error: "User not found" });
+
         res.status(200).json(user.games);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(400).json({ error: 'Failed to fetch user collection', details: err.message });
     }
 };
 
-// Remove game from user's collection [Requirement: Remove games]
-exports.removeFromCollection = async (req, res) => {
+// Remove game from user's collection
+removeFromCollection = async (req, res) => {
     try {
         const { gameId } = req.params;
+        if (!gameId) return res.status(400).json({ error: 'gameId is required' });
+
         const user = await User.findByIdAndUpdate(
             req.user.id,
             { $pull: { games: gameId } },
             { new: true }
-        ).populate('games');
+        ).populate('games', '-__v');
         
         res.status(200).json({ message: "Game removed", collection: user.games });
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        console.error(err);
+        res.status(400).json({ error: 'Failed to remove game from collection', details: err.message });
     }
 };
 
-// Get a single game by ID [Requirement: Display game details]
-exports.getGameById = async (req, res) => {
+// Get a single game by ID
+getGameById = async (req, res) => {
     try {
-        const game = await Game.findById(req.params.gameId);
+        const { gameId } = req.params;
+        if (!gameId) return res.status(400).json({ error: 'gameId is required' });
+
+        const game = await Game.findById(gameId);
         if (!game) return res.status(404).json({ error: "Game not found" });
+
         res.status(200).json(game);
     } catch (err) {
-        res.status(400).json({ error: "Invalid Game ID" });
+        console.error(err);
+        res.status(400).json({ error: 'Invalid game ID', details: err.message });
     }
 };
 
 // Update a game
-exports.updateGame = async (req, res) => {
+updateGame = async (req, res) => {
     try {
-        const game = await Game.findByIdAndUpdate(
-            req.params.gameId, 
-            req.body, 
-            { new: true } // Return the updated document
-        );
-        if (!game) return res.status(404).json({ error: "Game not found" });
+
+        const { gameId } = req.params;
+        if (!gameId) return res.status(400).json({ error: 'gameId is required' });
+
+        const game = await Game.findByIdAndUpdate(gameId, req.body, { new: true });
+        if (!game) return res.status(404).json({ error: 'Game not found' });
+
         res.status(200).json(game);
     } catch (err) {
-        res.status(400).json({ error: err.message });
+        reconsole.error(err);
+        res.status(400).json({ error: 'Failed to Update the Game', details: err.message });
     }
+};
+
+export {
+  listAll,
+  create,
+  addToUserCollection,
+  getUserCollection,
+  removeFromCollection,
+  getGameById,
+  updateGame
 };

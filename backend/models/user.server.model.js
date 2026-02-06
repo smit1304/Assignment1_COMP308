@@ -1,3 +1,5 @@
+// Define user model using Mongoose
+
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
