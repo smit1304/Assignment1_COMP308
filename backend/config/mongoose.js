@@ -1,4 +1,5 @@
-// config/mongoose.js
+// This file sets up the connection to MongoDB using Mongoose.
+
 import mongoose from 'mongoose';
 import config from './config.js';
 

@@ -1,3 +1,5 @@
+// Centralized configuration for the application, including environment variables and default values.
+
 import 'dotenv/config';
 
 const config = {
