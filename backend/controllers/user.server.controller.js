@@ -1,83 +1,120 @@
-// backend/controllers/user.server.controller.js
-const User = require('mongoose').model('User');
-const jwt = require('jsonwebtoken');
-const config = require('../config/config');
+// Define user-related controller functions (e.g., register, login)
 
-// Helper function to create a JWT token
-const createToken = (id) => {
-    return jwt.sign({ id }, config.secretKey, { expiresIn: '1d' });
+import User from '../models/user.server.model.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import config from '../config.js';
+
+// Helper function to generate JWT token
+const generateToken = (id) => {
+    return jwt.sign({id}, config.secretKey, { expiresIn: '1d' });
 };
 
+
 // Register a new user
-exports.register = async (req, res, next) => { // Added 'next' here
+const registerUser = async (req, res) => {
     try {
-        const { username, password } = req.body;
-        
-        // Basic validation check
-        if (!username || !password) {
+        const {username, password} =  req.body;
+
+        // Basic validation
+        if(!username || !password) {
             return res.status(400).json({ error: "Username and password are required" });
         }
 
-        const user = new User({ username, password });
+        // Check if user already exists
+        const existingUser = await User.findOne({ username });
+        if(existingUser) {
+            return res.status(400).json({ error: "User already exists" });
+        }
+
+        // Create new user
+        const user = await User.create({ username, password });
         await user.save();
-        
-        const token = createToken(user._id);
-        res.cookie('token', token, { httpOnly: true, maxAge: 86400000 }); 
-        
-        res.status(201).json({ 
-            message: "User registered successfully", 
-            userId: user._id, 
-            username: user.username 
-        });
+
+        const token = generateToken(user._id);
+        res.cookie('token', token, { httpOnly: true, maxAge: 86400000 });
+
+        res.status(201).json({
+        message: 'User registered successfully',
+        userId: user._id,
+        username: user.username
+    });
+
     } catch (err) {
-        // Instead of just res.status, we can pass the error to Express
         console.error(err);
-        res.status(400).json({ error: err.message });
+        res.status(500).json({ error: 'Failed to register user', details: err.message });
     }
 };
 
 // Login user
-exports.login = async (req, res) => {
-    try {
-        const { username, password } = req.body;
-        const user = await User.findOne({ username });
+const loginUser = async (req, res) => {
+    try{
 
-        if (!user || !(await require('bcryptjs').compare(password, user.password))) {
-            return res.status(401).json({ error: "Invalid credentials" });
+        const {username, password} = req.body;
+
+        // Basic validation
+        if(!username || !password) {
+            return res.status(400).json({ error: "Username and password are required" });
         }
 
-        const token = createToken(user._id);
+        // Check if user exists
+        const user = await User.findOne({ username });
+        if(!user) {
+            return res.status(400).json({ error: "Invalid credentials" });
+        }
+
+        // Compare password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if(!isMatch) {
+            return res.status(400).json({ error: "Invalid credentials" });
+        }
+
+        const token = generateToken(user._id);
         res.cookie('token', token, { httpOnly: true, maxAge: 86400000 });
 
-        res.status(200).json({ 
-            message: "Login successful", 
-            userId: user._id, 
-            username: user.username 
+        res.status(200).json({
+            message: 'Login successful',
+            userId: user._id,
+            username: user.username
         });
+
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error(err);
+        res.status(500).json({ error: 'Failed to login', details: err.message });
     }
-};
+}
 
-// Logout user by clearing the cookie
-exports.logout = (req, res) => {
+// Logout user
+const logoutUser = (req, res) => {
     res.clearCookie('token');
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ message: 'Logout successful' });
 };
 
-exports.getMe = async (req, res) => {
-    try {
-        // req.user.id is populated by the auth middleware
-        const user = await User.findById(req.user.id).select('-password'); // Exclude password
-        if (!user) {
+// Get Authenticated user's info
+const getUserInfo = async (req, res) => {
+    try{
+        // req.user is set by auth middleware
+        const user = await User.findById(req.user.id).select('-password').populate('games', '-__v');
+        
+        if(!user) {
             return res.status(404).json({ error: "User not found" });
         }
-        res.status(200).json({ 
-            userId: user._id, 
+
+        res.status(200).json({
+            userId: user._id,
             username: user.username,
             games: user.games
         });
     } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch user info', details: err.message });
+    };
+}
+
+
+export default {
+    registerUser,
+    loginUser,
+    logoutUser,
+    getUserInfo
 };
