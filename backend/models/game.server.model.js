@@ -1,15 +1,15 @@
-// backend/models/game.server.model.js
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
 
-const GameSchema = new Schema({
-    title: { type: String, required: true }, 
-    genre: { type: String, required: true }, 
-    platform: { type: String, required: true },
-    releaseYear: { type: Number, required: true },
-    developer: { type: String, required: true },
-    rating: { type: Number, min: 1, max: 10 },
-    description: { type: String }
+const GameSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  genre: { type: String },
+  platform: { type: String },
+  releaseYear: { type: Number },
+  developer: { type: String },
+  rating: { type: Number },
+  description: { type: String }
+}, {
+    timestamps: true // Automatically add createdAt and updatedAt fields
 });
 
-mongoose.model('Game', GameSchema);
+export default mongoose.model('Game', GameSchema);
