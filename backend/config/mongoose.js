@@ -9,7 +9,9 @@ const connectDB = async () => {
 
     // Connect to MongoDB using the URI from config
     try{
-        const conn = await mongoose.connect(config.mongoDBUri);
+        const conn = await mongoose.connect(config.mongoDBUri, {
+            dbName: config.mongoDBName,
+        });
         console.log(`MongoDB Connected: ${conn.connection.host}`);
     } catch (error) {
         console.error(`Error connecting to MongoDB: ${error.message}`);
