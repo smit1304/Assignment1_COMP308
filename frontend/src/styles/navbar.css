@@ -1,119 +1,60 @@
-/* Navbar Container */
+/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: rgba(45, 52, 54, 0.8); /* Semi-transparent dark background */
-  backdrop-filter: blur(10px);        /* Blur effect for the 3D background */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000; /* Ensure it stays on top of the 3D canvas */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(90deg, #1a237e 0%, #283593 100%);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-/* Logo Styling */
-.navbar .logo a {
+.logo a {
   font-size: 1.8rem;
   font-weight: 800;
   color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.5px;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  background: linear-gradient(90deg, #6c5ce7, #a29bfe); /* Gradient Text */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-decoration: none;
 }
 
-/* Navigation Links Container */
-.navbar .links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
+.nav-links {
+    display: flex;
+    align-items: center;
 }
 
-/* Individual Links */
-.navbar .links a {
-  color: #dfe6e9;
+.nav-links a, .nav-links button {
+  margin-left: 2rem;
+  color: rgba(255,255,255,0.7);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  background: none;
+  border: none;
+  cursor: pointer;
   font-size: 1rem;
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.navbar .links a:hover {
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-/* Active/Hover Underline Effect */
-.navbar .links a::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -4px;
-  left: 0;
-  background-color: #6c5ce7;
-  transition: width 0.3s;
-}
-
-.navbar .links a:hover::after {
-  width: 100%;
-}
-
-/* Admin Link Specifics */
-.admin-link {
-  color: #ff7675 !important; /* Red/Salmon color to distinguish admin actions */
-  border: 1px solid rgba(255, 118, 117, 0.3);
-  padding: 5px 10px;
+  transition: all 0.2s;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
 }
 
-.admin-link:hover {
-  background: rgba(255, 118, 117, 0.1);
-  box-shadow: 0 0 10px rgba(255, 118, 117, 0.3);
+.nav-links a:hover, .nav-links button:hover, .nav-links a.active {
+  color: #fff;
+  background-color: rgba(255,255,255,0.1);
 }
 
-/* User Welcome Text */
-.user-welcome {
-  color: #a29bfe;
-  font-weight: 600;
-  margin-right: 10px;
-  border-left: 1px solid rgba(255,255,255,0.2);
-  padding-left: 15px;
+.user-greeting {
+    margin-left: 1.5rem;
+    font-size: 0.9rem;
+    background: rgba(0,0,0,0.2);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
 }
 
-/* Logout Button */
-.btn-logout {
-  background: linear-gradient(45deg, #d63031, #ff7675);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 0.9rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+.logout-btn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-.btn-logout:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(214, 48, 49, 0.4);
-}
-
-/* Responsive Mobile Layout (Optional but recommended) */
-@media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    padding: 1rem;
-  }
-  
-  .navbar .links {
-    margin-top: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
 }

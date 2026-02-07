@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import authService from './authService';
-import { useAuth } from '../../context/AuthContext'; // Import useAuth to log user in immediately
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import Button from '../../components/common/Button';
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({ username: '', password: '' });
     const [error, setError] = useState('');
-    const { login } = useAuth(); // Use login function from context to set user state
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -18,7 +19,6 @@ const RegisterForm = () => {
         setError('');
         try {
             await authService.register(formData);
-            // Auto login after register
             await login(formData); 
             navigate('/');
         } catch (err) {
@@ -52,7 +52,7 @@ const RegisterForm = () => {
                         minLength="6"
                     />
                 </div>
-                <button type="submit">Register</button>
+                <Button type="submit" variant="primary" className="btn-block">Register</Button>
             </form>
             <p>
                 Already have an account? <Link to="/login">Login here</Link>

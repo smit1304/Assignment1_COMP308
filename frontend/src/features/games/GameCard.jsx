@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import Button from '../../components/common/Button';
 
 const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
     const { user } = useAuth();
@@ -8,9 +9,6 @@ const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
 
     const handleAction = (action) => {
         if (!user) {
-            // Redirect to login if not logged in (could use navigate, but simple link works too if we change interaction)
-            // But requirement says "if no one is logend in and click ... redirect".
-            // So we need to prevent default and navigate.
             window.location.href = '/login'; 
             return;
         }
@@ -38,12 +36,11 @@ const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
                     Details
                 </Link>
                 
-                {/* Only show Add/Remove for non-admins. If guest, show Add but it redirects to login */}
                 {(!user || user.role !== 'admin') && (
                     inCollection ? (
-                        <button onClick={() => handleAction(() => onRemove(game._id))} className="remove-btn">Remove</button>
+                        <Button onClick={() => handleAction(() => onRemove(game._id))} variant="danger" className="btn-block">Remove</Button>
                     ) : (
-                        <button onClick={() => handleAction(() => onAdd(game._id))} className="add-btn">Add to Collection</button>
+                        <Button onClick={() => handleAction(() => onAdd(game._id))} variant="primary" className="btn-block">Add to Collection</Button>
                     )
                 )}
             </div>

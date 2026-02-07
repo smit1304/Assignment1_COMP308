@@ -1,19 +1,65 @@
-.auth-form {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 2rem;
-  border-radius: 10px;
-  backdrop-filter: blur(10px);
-  max-width: 400px;
-  margin: 50px auto;
-  border: 1px solid rgba(255,255,255,0.2);
+/* Forms */
+input, textarea, select {
+    display: block;
+    width: 100%;
+    margin-bottom: 1.2rem;
+    padding: 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+    transition: border-color 0.2s, background-color 0.2s;
 }
 
-.form-group { margin-bottom: 1rem; }
-.form-group label { display: block; margin-bottom: 0.5rem; }
-.form-group input, .form-group textarea, .form-group select {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background: rgba(255,255,255,0.9);
+input:focus, textarea:focus, select:focus {
+    border-color: var(--primary-color);
+    background-color: #fff;
+    outline: none;
+}
+
+/* Auth Forms */
+.auth-form-container {
+  max-width: 400px;
+  margin: 4rem auto;
+  padding: 2.5rem;
+  background: #ffffff;
+  color: #333;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  text-align: center;
+  border: 1px solid #eee;
+}
+
+.auth-form-container h2 {
+    margin-top: 0;
+    color: var(--primary-color);
+}
+
+.form-group input {
+  margin-bottom: 1rem;
+}
+
+/* Admin Form */
+.game-form {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  margin-bottom: 3rem;
+  border: 1px solid #f0f0f0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-form h3 { 
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+    padding-bottom: 0.5rem;
 }

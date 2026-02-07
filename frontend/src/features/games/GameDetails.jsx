@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import gameService from './gameService';
 import { useAuth } from '../../context/AuthContext';
+import Button from '../../components/common/Button';
 
 const GameDetails = () => {
-    const { id } = useParams();
+    const { id } = useParams(); // Note: route is :gameId now in backend, but frontend route is :id in App.jsx. Service uses id.
     const [game, setGame] = useState(null);
     const [loading, setLoading] = useState(true);
     const { user } = useAuth();
@@ -40,7 +41,7 @@ const GameDetails = () => {
                 <p><strong>Description:</strong></p>
                 <p className="description">{game.description}</p>
             </div>
-            <button onClick={() => navigate(-1)} className="back-btn">Back to Library</button>
+            <Button onClick={() => navigate(-1)} variant="secondary" className="back-btn">Back to Library</Button>
         </div>
     );
 };

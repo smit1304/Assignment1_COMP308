@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import Button from '../../components/common/Button';
 
 const LoginForm = () => {
     const [formData, setFormData] = useState({ username: '', password: '' });
@@ -48,7 +49,7 @@ const LoginForm = () => {
                         required 
                     />
                 </div>
-                <button type="submit">Login</button>
+                <Button type="submit" variant="primary" className="btn-block">Login</Button>
             </form>
             <p>
                 Don't have an account? <Link to="/register">Register here</Link>

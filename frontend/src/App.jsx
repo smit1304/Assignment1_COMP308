@@ -7,22 +7,11 @@ import RegisterForm from './features/auth/RegisterForm';
 import GameList from './features/games/GameList';
 import GameDetails from './features/games/GameDetails';
 import AdminDashboard from './features/admin/AdminDashboard';
-import './styles/App.css'; // We'll update this
+import './styles/App.css';
+import './styles/Navbar.css';
+import './styles/Forms.css';
 
-// Protected Route Component
-const ProtectedRoute = ({ children, adminOnly = false }) => {
-    const { user, loading } = useAuth();
-    
-    if (loading) return <div>Loading...</div>;
-    
-    if (!user) return <Navigate to="/login" />;
-    
-    if (adminOnly && user.role !== 'admin') {
-        return <Navigate to="/" />;
-    }
-    
-    return children;
-};
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (

@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import AnimatedBackground from '../features/three/AnimatedBackground';
+import Button from '../components/common/Button';
 
 const MainLayout = () => {
     const { user, logout } = useAuth();
@@ -26,7 +27,7 @@ const MainLayout = () => {
                             {user.role !== 'admin' && <Link to="/collection">My Collection</Link>}
                             {user.role === 'admin' && <Link to="/admin">Admin Dashboard</Link>}
                             <span className="user-greeting">Hi, {user.username}</span>
-                            <button onClick={handleLogout} className="logout-btn">Logout</button>
+                            <Button onClick={handleLogout} variant="secondary" className="logout-btn">Logout</Button>
                         </>
                     ) : (
                         <>
