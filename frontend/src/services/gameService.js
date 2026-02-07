@@ -1,7 +1,7 @@
 import api from './api';
 
 const gameService = {
-  // List all games in the system
+//   List all available games in the library
   getAllGames: async () => {
     try{
         const response = await api.get('/games');
