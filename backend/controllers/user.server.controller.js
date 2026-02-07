@@ -3,7 +3,7 @@
 import User from '../models/user.server.model.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import config from '../config.js';
+import config from '../config/config.js';
 
 // Helper function to generate JWT token
 const generateToken = (id) => {
