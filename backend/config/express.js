@@ -10,6 +10,7 @@ import config from './config.js';
 // Routes
 import userRoutes from '../routes/user.server.routes.js';
 import gameRoutes from '../routes/game.server.routes.js';
+import adminRoutes from '../routes/admin.server.routes.js';
 
 const configureExpress = () => {
     const app = express();
@@ -33,9 +34,13 @@ const configureExpress = () => {
         })
     );
 
+    // Serve Static Files (Uploaded Images)
+    app.use('/uploads', express.static('uploads'));
+
     // Mount routes
-    app.use('/api/users', userRoutes)
-    app.use('/api/games', gameRoutes)
+    app.use('/api/games', gameRoutes); // Public read-only
+    app.use('/api/users', userRoutes); // User actions
+    app.use('/api/admin', adminRoutes); // Admin actions
 
     // Global error handler (catches errors from routes)
     app.use((err, req, res, next) => {

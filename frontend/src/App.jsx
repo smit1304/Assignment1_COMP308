@@ -1,32 +1,57 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import NavBar from "./components/NavBar";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Games from "./pages/Games";
-import Library from "./pages/Library";
-import GameDetails from "./pages/GameDetails";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import MainLayout from './components/MainLayout';
+import LoginForm from './features/auth/LoginForm';
+import RegisterForm from './features/auth/RegisterForm';
+import GameList from './features/games/GameList';
+import GameDetails from './features/games/GameDetails';
+import AdminDashboard from './features/admin/AdminDashboard';
+import './styles/App.css'; // We'll update this
 
-export default function App() {
+// Protected Route Component
+const ProtectedRoute = ({ children, adminOnly = false }) => {
+    const { user, loading } = useAuth();
+    
+    if (loading) return <div>Loading...</div>;
+    
+    if (!user) return <Navigate to="/login" />;
+    
+    if (adminOnly && user.role !== 'admin') {
+        return <Navigate to="/" />;
+    }
+    
+    return children;
+};
+
+function App() {
   return (
-    <div>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Navigate to="/games" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-
-        {/* Public browsing */}
-        <Route path="/games" element={<Games />} />
-        <Route path="/games/:id" element={<GameDetails />} />
-
-        {/* Private library */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/library" element={<Library />} />
-        </Route>
-
-        <Route path="*" element={<p style={{ padding: 20 }}>404</p>} />
-      </Routes>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<GameList />} />
+            <Route path="login" element={<LoginForm />} />
+            <Route path="register" element={<RegisterForm />} />
+            <Route path="games/:id" element={<GameDetails />} />
+            
+            {/* Protected Routes */}
+            <Route path="collection" element={
+                <ProtectedRoute>
+                    <GameList view="collection" /> 
+                </ProtectedRoute>
+            } />
+            
+            <Route path="admin" element={
+                <ProtectedRoute adminOnly={true}>
+                    <AdminDashboard />
+                </ProtectedRoute>
+            } />
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
+
+export default App;
