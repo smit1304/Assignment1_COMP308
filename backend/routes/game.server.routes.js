@@ -2,7 +2,7 @@
 
 import express from 'express';
 import games from '../controllers/game.server.controller.js';
-import authMiddleware from '../middlewares/auth.middleware.js';
+import adminMiddleware from '../middlewares/admin.middleware.js';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ router.get('/', games.listAll);
 router.get('/:gameId', games.getById);
 
 // Protected routes (for admin)
-router.post('/',authMiddleware, games.create);
-router.put('/:gameId', authMiddleware, games.update);
+router.post('/', adminMiddleware, games.create);
+router.put('/:gameId', adminMiddleware, games.update);
 
 export default router;

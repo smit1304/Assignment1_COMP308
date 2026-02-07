@@ -14,7 +14,7 @@ const generateToken = (id) => {
 // Register a new user
 const register = async (req, res) => {
     try {
-        const {username, password} =  req.body;
+        const {username, password, role} =  req.body;
 
         // Basic validation
         if(!username || !password) {
@@ -28,7 +28,7 @@ const register = async (req, res) => {
         }
 
         // Create new user
-        const user = await User.create({ username, password });
+        const user = await User.create({ username, password, role: role || 'user'});
 
         const token = generateToken(user._id);
         res.cookie('token', token, { httpOnly: true, maxAge: 86400000 });
@@ -36,7 +36,8 @@ const register = async (req, res) => {
         res.status(201).json({
         message: 'User registered successfully',
         userId: user._id,
-        username: user.username
+        username: user.username,
+        role: user.role
     });
 
     } catch (err) {
