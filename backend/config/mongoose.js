@@ -1,11 +1,22 @@
-// backend/config/mongoose.js
-const mongoose = require('mongoose');
-const config = require('./config');
+// This file sets up the connection to MongoDB using Mongoose.
 
-module.exports = function() {
-    mongoose.connect(config.mongoUri)
-        .then(() => console.log('MongoDB connected successfully'))
-        .catch(err => console.error('MongoDB connection error:', err));
-    
-    return mongoose.connection;
-};
+import mongoose from 'mongoose';
+import config from './config.js';
+
+const connectDB = async () => {
+    // Allow queries to include fields not present in the Schema
+    mongoose.set('strictQuery', false);
+
+    // Connect to MongoDB using the URI from config
+    try{
+        const conn = await mongoose.connect(config.mongoDBUri, {
+            dbName: config.mongoDBName,
+        });
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.error(`Error connecting to MongoDB: ${error.message}`);
+        process.exit(1); // Exit process with failure
+    }
+}
+
+export default connectDB;

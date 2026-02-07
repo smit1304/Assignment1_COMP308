@@ -1,8 +1,9 @@
-// backend/middleware/auth.middleware.js
-const jwt = require('jsonwebtoken');
-const config = require('../config/config');
+// Middleware to authenticate JWT from HTTP-only cookies
 
-module.exports = (req, res, next) => {
+import jwt from 'jsonwebtoken';
+import config from '../config/config.js';
+
+const authMiddleware = (req, res, next) => {
     // Read the token from the HTTP-only cookie
     const token = req.cookies.token;
 
@@ -10,13 +11,17 @@ module.exports = (req, res, next) => {
         return res.status(401).json({ error: "Access denied. No token provided." });
     }
 
-    try {
+    try{
         // Verify the token
-        const decoded = jwt.verify(token, config.secretKey);
-        // Add the user ID from the token to the request object
+        const decoded = jwt.verify(token, config.jwtSecret);
+
+        // Attach user info from token to request object
         req.user = decoded;
         next();
     } catch (err) {
-        res.status(401).json({ error: "Invalid or expired token." });
+        console.error('JWT verification failed:', err.message);
+        res.status(401).json({ error: 'Invalid or expired token.' });
     }
 };
+
+export default authMiddleware;
