@@ -13,7 +13,7 @@ router.post('/login', user.login);
 router.post('/logout', user.logout);
 
 // Protected route
-router.get('/info', authMiddleware, user.getInfo);
+router.get('/me', authMiddleware, user.getInfo);
 
 // User collection routes (protected)
 router.get('/games', authMiddleware, user.getCollection);

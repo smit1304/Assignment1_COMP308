@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/', games.listAll);
 router.get('/:gameId', games.getById);
 
-// Protected routes (For Admin)
+// Protected routes
 router.post('/',authMiddleware, games.create);
 router.put('/:gameId', authMiddleware, games.update);
 
