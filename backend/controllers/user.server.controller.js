@@ -7,7 +7,7 @@ import config from '../config/config.js';
 
 // Helper function to generate JWT token
 const generateToken = (id) => {
-    return jwt.sign({id}, config.secretKey, { expiresIn: '1d' });
+    return jwt.sign({id}, config.jwtSecret, { expiresIn: '1d' });
 };
 
 
@@ -29,7 +29,6 @@ const register = async (req, res) => {
 
         // Create new user
         const user = await User.create({ username, password });
-        await user.save();
 
         const token = generateToken(user._id);
         res.cookie('token', token, { httpOnly: true, maxAge: 86400000 });
@@ -94,7 +93,7 @@ const logout = (req, res) => {
 const getInfo = async (req, res) => {
     try{
         // req.user is set by auth middleware
-        const user = await User.findById(req.user.id).select('-password').populate('games', '-__v');
+        const user = await User.findById(req.user.id).select('password').populate('games', '-__v');
         
         if(!user) {
             return res.status(404).json({ error: "User not found" });
@@ -111,10 +110,68 @@ const getInfo = async (req, res) => {
     };
 }
 
+// Users Game Collection Management
+
+// Add a game to a User's personal collection
+const addToCollection = async (req, res) => {
+    try {
+        const { gameId } = req.body;
+        if(!gameId) {
+            return res.status(400).json({ error: "Game ID is required" });
+        }
+        
+        // Use req.user.id from the auth middleware
+        const user = await User.findByIdAndUpdate(
+            req.user.id, 
+            { $addToSet: { games: gameId } }, 
+            { new: true }
+        ).populate('games', '-__v');
+        
+        res.status(200).json(user.games);
+    } catch (err) {
+        console.error(err);
+        res.status(400).json({ error: 'Failed to add game to collection', details: err.message });
+    }
+};
+
+// Get current user's collection
+const getCollection = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).populate('games', '-__v');
+        if(!user) return res.status(404).json({ error: "User not found" });
+
+        res.status(200).json(user.games);
+    } catch (err) {
+        console.error(err);
+        res.status(400).json({ error: 'Failed to fetch user collection', details: err.message });
+    }
+};
+
+// Remove game from user's collection
+const removeFromCollection = async (req, res) => {
+    try {
+        const { gameId } = req.params;
+        if (!gameId) return res.status(400).json({ error: 'gameId is required' });
+
+        const user = await User.findByIdAndUpdate(
+            req.user.id,
+            { $pull: { games: gameId } },
+            { new: true }
+        ).populate('games', '-__v');
+        
+        res.status(200).json({ message: "Game removed", collection: user.games });
+    } catch (err) {
+        console.error(err);
+        res.status(400).json({ error: 'Failed to remove game from collection', details: err.message });
+    }
+};
 
 export default {
     register,
     login,
     logout,
-    getInfo
+    getInfo,
+    getCollection,
+    addToCollection,
+    removeFromCollection,
 };

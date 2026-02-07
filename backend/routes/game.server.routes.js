@@ -8,15 +8,10 @@ const router = express.Router();
 
 // Public routes
 router.get('/', games.listAll);
-router.post('/', games.create);
 router.get('/:gameId', games.getById);
 
 // Protected routes
+router.post('/',authMiddleware, games.create);
 router.put('/:gameId', authMiddleware, games.update);
-
-// User collection routes (protected)
-router.get('/user/collection', authMiddleware, games.getUserCollection);
-router.post('/user/games', authMiddleware, games.addToUserCollection);
-router.delete('/user/games/:gameId', authMiddleware, games.removeFromCollection);
 
 export default router;

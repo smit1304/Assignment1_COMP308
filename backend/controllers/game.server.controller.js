@@ -1,8 +1,6 @@
 // Definng the controller functions for game-related operations
 
 import Game from '../models/game.server.model.js';
-import User from '../models/user.server.model.js';
-
 
 // List all games
 const listAll = async (req, res) => {
@@ -26,75 +24,6 @@ const create = async (req, res) => {
     }
 };
 
-// Add a game to a User's personal collection
-const addToUserCollection = async (req, res) => {
-    try {
-        const { gameId } = req.body;
-        if(!gameId) {
-            return res.status(400).json({ error: "Game ID is required" });
-        }
-        
-        // Use req.user.id from the auth middleware
-        const user = await User.findByIdAndUpdate(
-            req.user.id, 
-            { $addToSet: { games: gameId } }, 
-            { new: true }
-        ).populate('games', '-__v');
-        
-        res.status(200).json(user.games);
-    } catch (err) {
-        console.error(err);
-        res.status(400).json({ error: 'Failed to add game to collection', details: err.message });
-    }
-};
-
-// Get current user's collection
-const getUserCollection = async (req, res) => {
-    try {
-        const user = await User.findById(req.user.id).populate('games', '-__v');
-        if(!user) return res.status(404).json({ error: "User not found" });
-
-        res.status(200).json(user.games);
-    } catch (err) {
-        console.error(err);
-        res.status(400).json({ error: 'Failed to fetch user collection', details: err.message });
-    }
-};
-
-// Remove game from user's collection
-const removeFromCollection = async (req, res) => {
-    try {
-        const { gameId } = req.params;
-        if (!gameId) return res.status(400).json({ error: 'gameId is required' });
-
-        const user = await User.findByIdAndUpdate(
-            req.user.id,
-            { $pull: { games: gameId } },
-            { new: true }
-        ).populate('games', '-__v');
-        
-        res.status(200).json({ message: "Game removed", collection: user.games });
-    } catch (err) {
-        console.error(err);
-        res.status(400).json({ error: 'Failed to remove game from collection', details: err.message });
-    }
-};
-
-// Get a single game by ID
-const getById = async (req, res) => {
-    try {
-        const { gameId } = req.params;
-        if (!gameId) return res.status(400).json({ error: 'gameId is required' });
-
-        const game = await Game.findById(gameId);
-        if (!game) return res.status(404).json({ error: "Game not found" });
-
-        res.status(200).json(game);
-    } catch (err) {
-        console.error(err);
-        res.status(400).json({ error: 'Invalid game ID', details: err.message });
-    }
-};
 
 // Update a game
 const update = async (req, res) => {
@@ -113,12 +42,26 @@ const update = async (req, res) => {
     }
 };
 
+
+// Get a game by ID
+const getById = async (req, res) => {
+    try {
+        const { gameId } = req.params;
+        if (!gameId) return res.status(400).json({ error: 'gameId is required' });
+
+        const game = await Game.findById(gameId);
+        if (!game) return res.status(404).json({ error: "Game not found" });
+
+        res.status(200).json(game);
+    } catch (err) {
+        console.error(err);
+        res.status(400).json({ error: 'Invalid game ID', details: err.message });
+    }
+};
+
 export default {
   listAll,
   create,
-  addToUserCollection,
-  getUserCollection,
-  removeFromCollection,
+  update,
   getById,
-  update
 };
