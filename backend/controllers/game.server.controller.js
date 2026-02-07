@@ -5,7 +5,7 @@ import User from '../models/user.server.model.js';
 
 
 // List all games
-listAll = async (req, res) => {
+const listAll = async (req, res) => {
     try {
         const games = await Game.find({});
         res.status(200).json(games);
@@ -16,7 +16,7 @@ listAll = async (req, res) => {
 };
 
 // Create a game
-create = async (req, res) => {
+const create = async (req, res) => {
     try {
         const game = await Game.create(req.body);
         res.status(201).json(game);
@@ -27,7 +27,7 @@ create = async (req, res) => {
 };
 
 // Add a game to a User's personal collection
-addToUserCollection = async (req, res) => {
+const addToUserCollection = async (req, res) => {
     try {
         const { gameId } = req.body;
         if(!gameId) {
@@ -49,7 +49,7 @@ addToUserCollection = async (req, res) => {
 };
 
 // Get current user's collection
-getUserCollection = async (req, res) => {
+const getUserCollection = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).populate('games', '-__v');
         if(!user) return res.status(404).json({ error: "User not found" });
@@ -62,7 +62,7 @@ getUserCollection = async (req, res) => {
 };
 
 // Remove game from user's collection
-removeFromCollection = async (req, res) => {
+const removeFromCollection = async (req, res) => {
     try {
         const { gameId } = req.params;
         if (!gameId) return res.status(400).json({ error: 'gameId is required' });
@@ -81,7 +81,7 @@ removeFromCollection = async (req, res) => {
 };
 
 // Get a single game by ID
-getById = async (req, res) => {
+const getById = async (req, res) => {
     try {
         const { gameId } = req.params;
         if (!gameId) return res.status(400).json({ error: 'gameId is required' });
@@ -97,7 +97,7 @@ getById = async (req, res) => {
 };
 
 // Update a game
-update = async (req, res) => {
+const update = async (req, res) => {
     try {
 
         const { gameId } = req.params;
@@ -113,7 +113,7 @@ update = async (req, res) => {
     }
 };
 
-export {
+export default {
   listAll,
   create,
   addToUserCollection,
