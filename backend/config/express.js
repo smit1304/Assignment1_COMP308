@@ -4,6 +4,7 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
+import config from './config.js';
 
 
 // Routes
@@ -15,7 +16,7 @@ const configureExpress = () => {
 
     // Middleware: Tools required before handling a request
     // Logging (dev only)
-    if (process.env.NODE_ENV === 'development') {
+    if (config.NODE_ENV === 'DEVELOPMENT') {
         app.use(morgan('dev'));
     }
 
