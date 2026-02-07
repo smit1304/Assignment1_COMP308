@@ -5,7 +5,7 @@ import User from '../models/user.server.model.js';
 
 
 // List all games
-listAllGames = async (req, res) => {
+listAll = async (req, res) => {
     try {
         const games = await Game.find({});
         res.status(200).json(games);
@@ -16,7 +16,7 @@ listAllGames = async (req, res) => {
 };
 
 // Create a game
-createGame = async (req, res) => {
+create = async (req, res) => {
     try {
         const game = await Game.create(req.body);
         res.status(201).json(game);
@@ -27,7 +27,7 @@ createGame = async (req, res) => {
 };
 
 // Add a game to a User's personal collection
-addGameToUserCollection = async (req, res) => {
+addToUserCollection = async (req, res) => {
     try {
         const { gameId } = req.body;
         if(!gameId) {
@@ -81,7 +81,7 @@ removeFromCollection = async (req, res) => {
 };
 
 // Get a single game by ID
-getGameById = async (req, res) => {
+getById = async (req, res) => {
     try {
         const { gameId } = req.params;
         if (!gameId) return res.status(400).json({ error: 'gameId is required' });
@@ -97,7 +97,7 @@ getGameById = async (req, res) => {
 };
 
 // Update a game
-updateGame = async (req, res) => {
+update = async (req, res) => {
     try {
 
         const { gameId } = req.params;
@@ -119,6 +119,6 @@ export {
   addToUserCollection,
   getUserCollection,
   removeFromCollection,
-  getGameById,
-  updateGame
+  getById,
+  update
 };

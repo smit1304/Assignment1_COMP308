@@ -12,7 +12,7 @@ const generateToken = (id) => {
 
 
 // Register a new user
-const registerUser = async (req, res) => {
+const register = async (req, res) => {
     try {
         const {username, password} =  req.body;
 
@@ -47,7 +47,7 @@ const registerUser = async (req, res) => {
 };
 
 // Login user
-const loginUser = async (req, res) => {
+const login = async (req, res) => {
     try{
 
         const {username, password} = req.body;
@@ -85,13 +85,13 @@ const loginUser = async (req, res) => {
 }
 
 // Logout user
-const logoutUser = (req, res) => {
+const logout = (req, res) => {
     res.clearCookie('token');
     res.status(200).json({ message: 'Logout successful' });
 };
 
 // Get Authenticated user's info
-const getUserInfo = async (req, res) => {
+const getInfo = async (req, res) => {
     try{
         // req.user is set by auth middleware
         const user = await User.findById(req.user.id).select('-password').populate('games', '-__v');
@@ -113,8 +113,8 @@ const getUserInfo = async (req, res) => {
 
 
 export default {
-    registerUser,
-    loginUser,
-    logoutUser,
-    getUserInfo
+    register,
+    login,
+    logout,
+    getInfo
 };
