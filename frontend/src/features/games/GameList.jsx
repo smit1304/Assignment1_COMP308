@@ -65,7 +65,7 @@ const GameList = (props) => {
     return (
         <div className="game-library">
             <div className="library-header">
-                <h2>{props.view === 'collection' ? 'My Collection' : 'Game Library'}</h2>
+                <h2>Game Library</h2>
                 {user && user.role === 'admin' && (
                     <Link to="/admin" className="admin-add-btn">
                         + Add New Game
