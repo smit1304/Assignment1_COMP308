@@ -2,18 +2,25 @@ import axios from 'axios';
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api',
-    withCredentials: true // Important for cookies
+    withCredentials: true
 });
 
-// Response interceptor for error handling
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Handle 401 Unauthorized globally if needed (e.g., redirect to login)
-        if (error.response && error.response.status === 401) {
-            // Optional: Dispatch logout action or clear local state if needed
-            // Window.location.href = '/login'; // Be careful with this in SPA
+        if (error.response) {
+            const { status, data } = error.response;
+
+            if (status === 401) {
+                console.error('Unauthorized');
+                // optional: redirect / logout
+            }
+
+            console.error(`API Error ${status}`, data);
+        } else {
+            console.error('Network Error or Server Unreachable');
         }
+
         return Promise.reject(error);
     }
 );
