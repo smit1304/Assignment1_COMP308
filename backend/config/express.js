@@ -4,18 +4,20 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
+import config from './config.js';
 
 
 // Routes
 import userRoutes from '../routes/user.server.routes.js';
 import gameRoutes from '../routes/game.server.routes.js';
+import adminRoutes from '../routes/admin.server.routes.js';
 
 const configureExpress = () => {
     const app = express();
 
     // Middleware: Tools required before handling a request
     // Logging (dev only)
-    if (process.env.NODE_ENV === 'development') {
+    if (config.NODE_ENV === 'DEVELOPMENT') {
         app.use(morgan('dev'));
     }
 
@@ -32,9 +34,13 @@ const configureExpress = () => {
         })
     );
 
+    // Serve Static Files (Uploaded Images)
+    app.use('/uploads', express.static('uploads'));
+
     // Mount routes
-    app.use('/api/users', userRoutes)
-    app.use('/api/games', gameRoutes)
+    app.use('/api/games', gameRoutes); // Public read-only
+    app.use('/api/users', userRoutes); // User actions
+    app.use('/api/admin', adminRoutes); // Admin actions
 
     // Global error handler (catches errors from routes)
     app.use((err, req, res, next) => {

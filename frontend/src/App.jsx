@@ -1,32 +1,61 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import NavBar from "./components/NavBar";
-import ProtectedRoute from "./components/ProtectedRoute";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Games from "./pages/Games";
-import Library from "./pages/Library";
-import GameDetails from "./pages/GameDetails";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import MainLayout from './components/MainLayout';
+import LoginForm from './features/auth/LoginForm';
+import RegisterForm from './features/auth/RegisterForm';
+import GameList from './features/games/GameList';
+import GameDetails from './features/games/GameDetails';
+import AdminDashboard from './features/admin/AdminDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import { Toaster } from 'react-hot-toast';
 
-export default function App() {
+// Styles
+import './styles/App.css';
+import './styles/Navbar.css';
+import './styles/Forms.css';
+import './styles/GameCard.css';
+import './styles/SearchBar.css';
+import './styles/Admin.css';
+import './styles/GameDetails.css';
+
+function App() {
   return (
-    <div>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Navigate to="/games" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <BrowserRouter>
+      <AuthProvider>
+        <Toaster position="top-center" reverseOrder={false} />
 
-        {/* Public browsing */}
-        <Route path="/games" element={<Games />} />
-        <Route path="/games/:id" element={<GameDetails />} />
+        <Routes>
+          {/* Main layout wrapper */}
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<GameList />} />  {/* Home / Game Library */}
+            <Route path="login" element={<LoginForm />} /> {/* Login page */}
+            <Route path="register" element={<RegisterForm />} /> {/* Register page */}
+            <Route path="games/:id" element={<GameDetails />} /> {/* Game details */}
 
-        {/* Private library */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/library" element={<Library />} />
-        </Route>
-
-        <Route path="*" element={<p style={{ padding: 20 }}>404</p>} />
-      </Routes>
-    </div>
+            {/* Protected Routes */}
+            <Route 
+              path="collection" 
+              element={
+                <ProtectedRoute>
+                  <GameList view="collection" /> {/* User's game collection */}
+                </ProtectedRoute>
+              } 
+            />
+            
+            <Route 
+              path="admin" 
+              element={
+                <ProtectedRoute adminOnly={true}>
+                  <AdminDashboard /> {/* Admin dashboard */}
+                </ProtectedRoute>
+              } 
+            />
+          </Route>
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
+
+export default App;

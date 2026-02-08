@@ -1,0 +1,132 @@
+/* =========================
+   Game Grid Layout
+   ========================= */
+.game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Flexible card sizing */
+    gap: 2.5rem;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+/* =========================
+   Individual Game Card
+   ========================= */
+.game-card {
+    position: relative;
+    background: linear-gradient(145deg, #1e1e2f, #161625); /* Dark gradient base */
+    border-radius: 20px;
+    overflow: hidden; /* Contain 3D canvas */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.05); /* Subtle rim effect */
+    display: flex;
+    flex-direction: column;
+    height: 450px; /* Tall card for 3D effect */
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
+}
+
+.game-card:hover {
+    transform: translateY(-8px); /* Lift on hover */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px rgba(79,195,247,0.2); /* Glow effect */
+    border-color: rgba(79,195,247,0.3);
+}
+
+/* =========================
+   3D Image Container
+   ========================= */
+.game-image-container {
+    height: 300px; /* Prominent visual area */
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    background: #000; /* Fallback for no image */
+}
+
+/* =========================
+   Card Content Area
+   ========================= */
+.game-card-content {
+    flex: 1;
+    padding: 1.2rem;
+    background: rgba(255,255,255,0.03); /* Glassy effect */
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 2;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.game-card h3 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.game-card p {
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+    color: #b0b0cc;
+}
+
+/* Genre badge */
+.genre {
+    display: inline-block;
+    background: rgba(79,195,247,0.15);
+    color: #4fc3f7 !important;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem !important;
+    font-weight: 600;
+    border: 1px solid rgba(79,195,247,0.3);
+}
+
+/* =========================
+   Card Action Buttons
+   ========================= */
+.actions {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+/* Details / Link Button */
+.details-btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.details-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: #fff;
+}
+
+/* Placeholder when no image */
+.game-image-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 4rem;
+    color: rgba(255,255,255,0.1);
+}
+
+/* Admin-specific adjustments */
+.actions-admin {
+    justify-content: center !important;
+}
+
+.details-btn-admin {
+    flex: 0 1 100% !important;
+}

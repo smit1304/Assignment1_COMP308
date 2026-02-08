@@ -17,6 +17,11 @@ const UserSchema = new mongoose.Schema({
         required: 'Password is required',
         minlength: 6
     },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
     // Reference to the Games collection
     games: [{
         type: mongoose.Schema.Types.ObjectId,

@@ -1,17 +1,10 @@
-// Define routes for game-related operations
-
 import express from 'express';
 import games from '../controllers/game.server.controller.js';
-import authMiddleware from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-// Public routes
+// Public routes: /api/games
 router.get('/', games.listAll);
-router.get('/:gameId', games.getById);
-
-// Protected routes
-router.post('/',authMiddleware, games.create);
-router.put('/:gameId', authMiddleware, games.update);
+router.get('/:gameId', games.getById); // Note: Project spec asked for /:id, but controller expects gameId
 
 export default router;

@@ -1,11 +1,24 @@
-import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import React from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-export default function ProtectedRoute() {
-  const { user, loading } = useAuth();
+// Route guard for authenticated and role-based access
+const ProtectedRoute = ({ children, adminOnly = false }) => {
+    const { user, loading } = useAuth();
 
-  if (loading) return <p style={{ padding: 20 }}>Loading session...</p>;
-  if (!user) return <Navigate to="/login" replace />;
+    // Show loader while auth state is resolving
+    if (loading) return <div>Loading...</div>;
 
-  return <Outlet />;
-}
+    // Redirect unauthenticated users to login
+    if (!user) return <Navigate to="/login" />;
+
+    // Restrict access to admin-only routes
+    if (adminOnly && user.role !== 'admin') {
+        return <Navigate to="/" />;
+    }
+
+    // Render protected content
+    return children;
+};
+
+export default ProtectedRoute;
