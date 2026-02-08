@@ -40,10 +40,6 @@ const AdminDashboard = () => {
         if (formData.image) data.append('image', formData.image);
 
         try {
-            // Axios will automatically set Content-Type to multipart/form-data when data is FormData
-            // BUT we explicitly set application/json in api.js. 
-            // We should rely on Axios's smart behavior or override headers in the service call.
-            // Let's assume standard behavior for now, but if it fails we update api.js or service.
             
             if (editingId) {
                 await gameService.updateGame(editingId, data);
@@ -52,7 +48,7 @@ const AdminDashboard = () => {
             }
             setFormData({ title: '', genre: '', platform: '', releaseYear: '', developer: '', rating: '', description: '', image: null });
             setEditingId(null);
-            // Reset file input manually if needed, or rely on form reset with key
+            
             document.getElementById('fileInput').value = '';
             loadGames();
         } catch (err) {
@@ -63,9 +59,6 @@ const AdminDashboard = () => {
     
     const [activeTab, setActiveTab] = useState('list'); // 'list' or 'form'
 
-    // ... existing loadGames ...
-    // ... existing handleChange ...
-    // ... existing handleSubmit ...
 
     const handleEdit = (game) => {
         setFormData(game);
@@ -79,9 +72,6 @@ const AdminDashboard = () => {
         document.getElementById('fileInput').value = '';
         setActiveTab('list');
     };
-
-    // ... existing handleDelete ...
-
 
 
     return (

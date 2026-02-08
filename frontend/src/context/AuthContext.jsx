@@ -3,10 +3,8 @@ import authService from '../services/authService';
 
 const AuthContext = createContext();
 
-// --- FIX 1: Create and Export the Custom Hook ---
 export const useAuth = () => useContext(AuthContext);
 
-// --- FIX 2: Use lowercase 'children' for props ---
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);

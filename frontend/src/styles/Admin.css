@@ -14,7 +14,7 @@
     padding: 1.2rem 1.5rem;
     text-align: left;
     border-bottom: 1px solid #f0f0f0;
-    color: #333; /* Explicitly set text color */
+    color: #333;
 }
 
 .admin-game-list th {
@@ -23,7 +23,7 @@
     text-transform: uppercase;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
-    color: #555; /* Slightly lighter for headers */
+    color: #555;
 }
 
 .admin-game-list tr:last-child td {
