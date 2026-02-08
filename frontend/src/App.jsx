@@ -17,10 +17,13 @@ import './styles/GameDetails.css';
 
 import ProtectedRoute from './components/ProtectedRoute';
 
+import { Toaster } from 'react-hot-toast';
+
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <Toaster position="top-center" reverseOrder={false} />
         <Routes>
           <Route path="/" element={<MainLayout />}>
             <Route index element={<GameList />} />

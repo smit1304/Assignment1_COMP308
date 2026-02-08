@@ -31,17 +31,36 @@ const GameDetails = () => {
 
     return (
         <div className="game-details">
-            <h1>{game.title}</h1>
-            <div className="game-info">
-                <p><strong>Genre:</strong> {game.genre}</p>
-                <p><strong>Platform:</strong> {game.platform}</p>
-                <p><strong>Release Year:</strong> {game.releaseYear}</p>
-                <p><strong>Developer:</strong> {game.developer}</p>
-                <p><strong>Rating:</strong> {game.rating}/5</p>
-                <p><strong>Description:</strong></p>
-                <p className="description">{game.description}</p>
+            <div className="game-header">
+                <h1>{game.title}</h1>
+                <Button onClick={() => navigate(-1)} variant="secondary" className="back-btn">Back to Library</Button>
             </div>
-            <Button onClick={() => navigate(-1)} variant="secondary" className="back-btn">Back to Library</Button>
+            
+            <div className="game-content">
+                <div className="game-info">
+                    <p><strong>Genre:</strong> {game.genre}</p>
+                    <p><strong>Platform:</strong> {game.platform}</p>
+                    <p><strong>Release Year:</strong> {game.releaseYear}</p>
+                    <p><strong>Developer:</strong> {game.developer}</p>
+                    <p><strong>Rating:</strong> {game.rating}/5</p>
+                    <p><strong>Description:</strong></p>
+                    <p className="description">{game.description}</p>
+                </div>
+
+                <div className="game-image-column">
+                    {game.imageUrl ? (
+                        <img 
+                            src={`${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:4000'}${game.imageUrl}`} 
+                            alt={game.title} 
+                            className="detail-image"
+                        />
+                    ) : (
+                        <div className="detail-placeholder">
+                            <span>🎮</span>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 };
