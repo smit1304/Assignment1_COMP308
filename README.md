@@ -115,14 +115,7 @@ The frontend is built with React and Vite.
 *   **Frontend**: React, Vite, React Router, Axios, **React Three Fiber (Three.js)**.
 *   **Backend**: Node.js, Express.js.
 *   **Database**: MongoDB (Mongoose ODM).
-*   **Styling**: Custom CSS3, Glassmorphism, Responsive Grid.
+*   **Styling**: Custom CSS3.
+*   **Three.js**
 
 ---
-
-## 🤝 Contributing
-
-1.  Fork the repository.
-2.  Create a feature branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
