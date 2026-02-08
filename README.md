@@ -108,8 +108,6 @@ The frontend is built with React and Vite.
 *   **Game Management**:
     *   **Add Game**: Create new game entries with Title, Genre, Platform, Description, and Image URL.
     *   **Edit Game**: Update existing game details.
-*   **System Status**: View total users and system stats.
-
 ---
 
 ## 🎨 Technology Stack
