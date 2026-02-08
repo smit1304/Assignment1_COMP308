@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance for API requests
 const api = axios.create({
-    baseURL: process.env.VITE_API_URL || 'http://localhost:4000/api', // Base URL from env or fallback
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api', // Base URL from env or fallback
     withCredentials: true // Send cookies with requests
 });
 
