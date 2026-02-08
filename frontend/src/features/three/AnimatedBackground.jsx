@@ -3,10 +3,12 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as random from 'maath/random/dist/maath-random.esm';
 
+// Starfield component with rotating points
 const Stars = (props) => {
     const ref = useRef();
-    const sphere = random.inSphere(new Float32Array(6000), { radius: 1.5 });
+    const sphere = random.inSphere(new Float32Array(6000), { radius: 1.5 }); // Random positions in sphere
 
+    // Rotate the starfield on each frame
     useFrame((state, delta) => {
         ref.current.rotation.x -= delta / 10;
         ref.current.rotation.y -= delta / 15;
@@ -27,6 +29,7 @@ const Stars = (props) => {
     );
 };
 
+// Wrapper for the 3D animated background
 const AnimatedBackground = () => {
     return (
         <div className="three-background">

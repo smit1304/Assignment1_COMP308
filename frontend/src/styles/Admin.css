@@ -1,4 +1,6 @@
-/* Admin List */
+/* =========================
+   Admin Game List Table
+   ========================= */
 .admin-game-list table {
     width: 100%;
     border-collapse: separate;
@@ -10,6 +12,7 @@
     margin-top: 1rem;
 }
 
+/* Table header and cell styling */
 .admin-game-list th, .admin-game-list td {
     padding: 1.2rem 1.5rem;
     text-align: left;
@@ -26,14 +29,19 @@
     color: #555;
 }
 
+/* Remove bottom border for last row */
 .admin-game-list tr:last-child td {
     border-bottom: none;
 }
 
+/* Hover effect for rows */
 .admin-game-list tr:hover td {
     background-color: #fcfcfc;
 }
 
+/* =========================
+   Admin Header & Actions
+   ========================= */
 .admin-header {
     display: flex;
     justify-content: space-between;
@@ -46,12 +54,16 @@
     gap: 1rem;
 }
 
+/* =========================
+   Form Layout
+   ========================= */
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
 
+/* File upload styling */
 .file-upload-container {
     margin-bottom: 1rem;
     border: 1px dashed #ccc;
@@ -72,11 +84,15 @@
     width: 100%;
 }
 
+/* Form buttons layout */
 .form-actions {
     display: flex;
     gap: 1rem;
 }
 
+/* =========================
+   Table Action Columns
+   ========================= */
 .action-header {
     text-align: right !important;
 }
@@ -96,6 +112,9 @@
     padding: 0.4rem 0.8rem !important;
 }
 
+/* =========================
+   Thumbnail Styling
+   ========================= */
 .thumbnail-cell {
     width: 60px;
     padding: 0.5rem !important;

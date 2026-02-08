@@ -5,13 +5,15 @@ import GameCard from './GameCard';
 import { useAuth } from '../../context/AuthContext';
 import SearchBar from '../../components/SearchBar';
 
+// Displays list of games; supports searching, filtering, and adding/removing from collection
 const GameList = (props) => {
-    const [games, setGames] = useState([]);
-    const [myGames, setMyGames] = useState([]);
+    const [games, setGames] = useState([]);         // All games
+    const [myGames, setMyGames] = useState([]);     // User's collection
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const { user } = useAuth();
 
+    // Fetch games on mount
     useEffect(() => {
         fetchGames();
     }, []);
@@ -31,6 +33,7 @@ const GameList = (props) => {
         }
     };
 
+    // Add game to user's collection
     const handleAdd = async (id) => {
         if (!user) return alert('Please login first');
         try {
@@ -41,6 +44,7 @@ const GameList = (props) => {
         }
     };
 
+    // Remove game from user's collection
     const handleRemove = async (id) => {
         try {
             await gameService.removeFromCollection(id);
@@ -50,6 +54,7 @@ const GameList = (props) => {
         }
     };
 
+    // Filter games based on search term and view type
     const filteredGames = games.filter(game => {
         const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                               game.genre.toLowerCase().includes(searchTerm.toLowerCase());
@@ -64,6 +69,7 @@ const GameList = (props) => {
 
     return (
         <div className="game-library">
+            {/* Header with admin add button */}
             <div className="library-header">
                 <h2>Game Library</h2>
                 {user && user.role === 'admin' && (
@@ -73,12 +79,14 @@ const GameList = (props) => {
                 )}
             </div>
             
+            {/* Search input */}
             <SearchBar 
                 value={searchTerm} 
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search games by title or genre..."
             />
             
+            {/* Grid of game cards */}
             <div className="game-grid">
                 {filteredGames.map(game => (
                     <GameCard 

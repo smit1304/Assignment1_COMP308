@@ -1,3 +1,4 @@
+/* Theme colors */
 :root {
   --primary: #6c5ce7;
   --secondary: #a29bfe;
@@ -6,6 +7,7 @@
   --danger: #ff7675;
 }
 
+/* Base styles */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,17 +16,20 @@ body {
   overflow-x: hidden;
 }
 
+/* Links and lists */
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; padding: 0; }
 
+/* Container for page content */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   position: relative;
-  z-index: 1; /* Ensure content sits above Three.js background */
+  z-index: 1; /* Above Three.js background */
 }
 
+/* Buttons */
 .btn {
   padding: 10px 20px;
   border: none;

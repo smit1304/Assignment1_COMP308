@@ -1,3 +1,6 @@
+/* =========================
+   Base Button Styles
+   ========================= */
 .btn {
     padding: 0.6rem 1rem;
     border-radius: 8px;
@@ -15,22 +18,29 @@
     top: 0;
 }
 
+/* Button press effect */
 .btn:active {
     transform: translateY(3px);
     box-shadow: none !important;
 }
 
+/* =========================
+   Primary Button
+   ========================= */
 .btn-primary {
     background: var(--primary-color);
     color: white;
-    box-shadow: 0 4px 0 #303f9f;
+    box-shadow: 0 4px 0 #303f9f; /* 3D shadow */
 }
 .btn-primary:hover {
     background: #3949ab;
     box-shadow: 0 4px 0 #283593;
-    transform: translateY(-1px);
+    transform: translateY(-1px); /* Lift on hover */
 }
 
+/* =========================
+   Secondary Button
+   ========================= */
 .btn-secondary {
     background: #f0f0f0;
     color: #333;
@@ -42,6 +52,9 @@
     transform: translateY(-1px);
 }
 
+/* =========================
+   Danger / Accent Button
+   ========================= */
 .btn-danger {
     background: var(--accent-color);
     color: white;
@@ -53,6 +66,9 @@
     transform: translateY(-1px);
 }
 
+/* =========================
+   Success Button
+   ========================= */
 .btn-success {
     background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
     color: white;
@@ -64,6 +80,7 @@
     transform: translateY(-1px);
 }
 
+/* Full-width button */
 .btn-block {
     width: 100%;
 }

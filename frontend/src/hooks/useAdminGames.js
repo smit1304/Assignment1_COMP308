@@ -2,10 +2,12 @@ import { useState, useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import gameService from '../services/gameService';
 
+// Custom hook for managing admin game operations (CRUD)
 const useAdminGames = () => {
-    const [games, setGames] = useState([]);
+    const [games, setGames] = useState([]); // List of all games
     const [loading, setLoading] = useState(false);
 
+    // Load all games from backend
     const loadGames = useCallback(async () => {
         setLoading(true);
         try {
@@ -19,15 +21,17 @@ const useAdminGames = () => {
         }
     }, []);
 
+    // Load games on mount
     useEffect(() => {
         loadGames();
     }, [loadGames]);
 
+    // Create a new game
     const createGame = async (gameData) => {
         try {
             await gameService.createGame(gameData);
             toast.success('Game created successfully!');
-            loadGames();
+            loadGames(); // Refresh list
             return true;
         } catch (err) {
             console.error(err);
@@ -36,11 +40,12 @@ const useAdminGames = () => {
         }
     };
 
+    // Update an existing game
     const updateGame = async (id, gameData) => {
         try {
             await gameService.updateGame(id, gameData);
             toast.success('Game updated successfully!');
-            loadGames();
+            loadGames(); // Refresh list
             return true;
         } catch (err) {
             console.error(err);
@@ -49,13 +54,14 @@ const useAdminGames = () => {
         }
     };
 
+    // Delete a game with confirmation
     const deleteGame = async (id) => {
         if (!window.confirm('Are you sure you want to delete this game?')) return;
         
         try {
             await gameService.deleteGame(id);
             toast.success('Game deleted successfully');
-            setGames(prev => prev.filter(g => g._id !== id));
+            setGames(prev => prev.filter(g => g._id !== id)); // Remove from state
         } catch (err) {
             console.error(err);
             toast.error('Failed to delete game.');

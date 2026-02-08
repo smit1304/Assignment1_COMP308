@@ -4,10 +4,14 @@ import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 import ThreeGameCard from '../../components/three/ThreeGameCard';
 
+// Card component displaying game info, 3D cover, and action buttons
 const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
     const { user } = useAuth();
-    const BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:4000';
+    const BASE_URL = import.meta.env.VITE_API_URL
+        ? import.meta.env.VITE_API_URL.replace('/api', '')
+        : 'http://localhost:4000';
 
+    // Handle add/remove actions, redirecting to login if user is not authenticated
     const handleAction = (action) => {
         if (!user) {
             window.location.href = '/login'; 
@@ -20,16 +24,16 @@ const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
 
     return (
         <div className="game-card">
-            {/* 3D Game Cover Area */}
+            {/* 3D Game Cover */}
             <div className="game-image-container">
-                 {imageUrl ? (
+                {imageUrl ? (
                     <ThreeGameCard imageUrl={imageUrl} />
                 ) : (
                     <span className="game-image-placeholder">🎮</span>
                 )}
             </div>
             
-            {/* Text and Actions Content Area */}
+            {/* Game info and action buttons */}
             <div className="game-card-content">
                 <div>
                     <h3>{game.title}</h3>
@@ -38,6 +42,7 @@ const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
                 </div>
                 
                 <div className={`actions ${user && user.role === 'admin' ? 'actions-admin' : ''}`}>
+                    {/* Details button */}
                     <Link 
                         to={user ? `/games/${game._id}` : '/login'} 
                         className={`details-btn ${user && user.role === 'admin' ? 'details-btn-admin' : ''}`}
@@ -45,11 +50,24 @@ const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
                         Details
                     </Link>
                     
+                    {/* Add/Remove buttons for non-admin users */}
                     {(!user || user.role !== 'admin') && (
                         inCollection ? (
-                            <Button onClick={() => handleAction(() => onRemove(game._id))} variant="danger" className="btn-block">Remove</Button>
+                            <Button 
+                                onClick={() => handleAction(() => onRemove(game._id))} 
+                                variant="danger" 
+                                className="btn-block"
+                            >
+                                Remove
+                            </Button>
                         ) : (
-                            <Button onClick={() => handleAction(() => onAdd(game._id))} variant="primary" className="btn-block">Add</Button>
+                            <Button 
+                                onClick={() => handleAction(() => onAdd(game._id))} 
+                                variant="primary" 
+                                className="btn-block"
+                            >
+                                Add
+                            </Button>
                         )
                     )}
                 </div>

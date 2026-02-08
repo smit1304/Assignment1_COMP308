@@ -2,7 +2,7 @@
 .search-bar-container {
     position: relative;
     max-width: 500px;
-    margin: 0 auto 2rem auto;
+    margin: 0 auto 2rem;
 }
 
 .search-input {
@@ -16,7 +16,6 @@
     transition: all 0.3s;
     box-sizing: border-box;
 }
-
 .search-input:focus {
     outline: none;
     border-color: var(--primary-color);
@@ -32,7 +31,7 @@
     opacity: 0.5;
 }
 
-/* Game Library Header (often used with search bar in list view) */
+/* Library header with search */
 .library-header {
     display: flex;
     justify-content: space-between;
