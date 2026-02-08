@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:4000/api',
+    baseURL: process.env.VITE_API_URL || 'http://localhost:4000/api',
     withCredentials: true
 });
 
@@ -13,7 +13,6 @@ api.interceptors.response.use(
 
             if (status === 401) {
                 console.error('Unauthorized');
-                // optional: redirect / logout
             }
 
             console.error(`API Error ${status}`, data);
