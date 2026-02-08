@@ -11,16 +11,23 @@ const generateToken = (user) => {
 };
 
 const register = async (userData) => {
-    const user = new User(userData);
-    await user.save();
-    return {
-        user: {
-            id: user._id,
-            username: user.username,
-            role: user.role
-        },
-        token: generateToken(user)
-    };
+    try {
+        const user = new User(userData);
+        await user.save();
+        return {
+            user: {
+                id: user._id,
+                username: user.username,
+                role: user.role
+            },
+            token: generateToken(user)
+        };
+    } catch (error) {
+        if (error.code === 11000 || error.code === '11000' || (error.message && error.message.includes('duplicate key'))) {
+            throw { status: 400, message: 'Username already exists' };
+        }
+        throw error;
+    }
 };
 
 const login = async (username, password) => {

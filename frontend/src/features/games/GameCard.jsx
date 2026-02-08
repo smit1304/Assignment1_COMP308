@@ -2,43 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
+import use3DTilt from '../../hooks/use3DTilt';
 
 const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
     const { user } = useAuth();
+    const { ref, tiltStyles, handleMouseMove, handleMouseLeave } = use3DTilt();
     const BASE_URL = import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:4000';
-    
-    // Tilt Logic
-    const cardRef = React.useRef(null);
-    const [tiltStyles, setTiltStyles] = React.useState({});
-
-    const handleMouseMove = (e) => {
-        const card = cardRef.current;
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        // Gentle tilt - max 10 degrees
-        const rotateX = ((y - centerY) / centerY) * -10; 
-        const rotateY = ((x - centerX) / centerX) * 10;
-
-        setTiltStyles({
-            transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`,
-            transition: 'transform 0.1s ease-out',
-            zIndex: 10,
-            boxShadow: '0 20px 30px rgba(0,0,0,0.5)'
-        });
-    };
-
-    const handleMouseLeave = () => {
-        setTiltStyles({
-            transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)',
-            transition: 'transform 0.5s ease-out',
-            zIndex: 1,
-            boxShadow: 'none'
-        });
-    };
 
     const handleAction = (action) => {
         if (!user) {
@@ -51,7 +20,7 @@ const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
     return (
         <div 
             className="game-card" 
-            ref={cardRef}
+            ref={ref}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             style={tiltStyles}

@@ -1,34 +1,21 @@
-import React, { useState } from 'react';
-import authService from '../../services/authService';
-import { useAuth } from '../../context/AuthContext';
-import { useNavigate, Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import Button from '../../components/common/Button';
+import AuthLayout from '../../components/layout/AuthLayout';
+import useRegisterForm from '../../hooks/useRegisterForm';
 
 const RegisterForm = () => {
-    const [formData, setFormData] = useState({ username: '', password: '' });
-    const [error, setError] = useState('');
-    const { login } = useAuth();
-    const navigate = useNavigate();
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError('');
-        try {
-            await authService.register(formData);
-            await login(formData); 
-            navigate('/');
-        } catch (err) {
-            setError(err.response?.data?.error || 'Registration failed');
-        }
-    };
+    const { formData, error, handleChange, handleSubmit } = useRegisterForm();
 
     return (
-        <div className="auth-form-container">
-            <h2>Register</h2>
+        <AuthLayout 
+            title="Register"
+            footer={
+                <p>
+                    Already have an account? <Link to="/login">Login here</Link>
+                </p>
+            }
+        >
             {error && <p className="error-message">{error}</p>}
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
@@ -54,10 +41,7 @@ const RegisterForm = () => {
                 </div>
                 <Button type="submit" variant="primary" className="btn-block">Register</Button>
             </form>
-            <p>
-                Already have an account? <Link to="/login">Login here</Link>
-            </p>
-        </div>
+        </AuthLayout>
     );
 };
 
