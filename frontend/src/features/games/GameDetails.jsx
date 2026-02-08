@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import gameService from './gameService';
+import gameService from '../../services/gameService';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
 

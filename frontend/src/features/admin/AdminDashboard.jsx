@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import gameService from '../games/gameService';
+import gameService from '../../services/gameService';
+import Button from '../../components/common/Button';
 
 const AdminDashboard = () => {
     const [games, setGames] = useState([]);
@@ -81,28 +82,29 @@ const AdminDashboard = () => {
 
     // ... existing handleDelete ...
 
+
+
     return (
         <div className="admin-dashboard">
-            <div className="admin-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+            <div className="admin-header">
                 <h2>Admin Dashboard</h2>
-                <div>
-                    <button 
+                <div className="admin-actions">
+                    <Button 
                         onClick={() => setActiveTab('list')} 
-                        className={activeTab === 'list' ? 'add-btn' : 'details-btn'}
-                        style={{ marginRight: '1rem' }}
+                        variant={activeTab === 'list' ? 'primary' : 'secondary'}
                     >
                         Manage Games
-                    </button>
-                    <button 
+                    </Button>
+                    <Button 
                         onClick={() => {
                             setEditingId(null);
                             setFormData({ title: '', genre: '', platform: '', releaseYear: '', developer: '', rating: '', description: '', image: null });
                             setActiveTab('form');
                         }} 
-                        className={activeTab === 'form' ? 'add-btn' : 'details-btn'}
+                        variant={activeTab === 'form' ? 'primary' : 'secondary'}
                     >
                         + Add New Game
-                    </button>
+                    </Button>
                 </div>
             </div>
             
@@ -110,29 +112,33 @@ const AdminDashboard = () => {
                 <div className="game-form">
                     <h3>{editingId ? 'Edit Game' : 'Add New Game'}</h3>
                     <form onSubmit={handleSubmit}>
-                        <input name="title" value={formData.title} onChange={handleChange} placeholder="Title" required />
-                        <input name="genre" value={formData.genre} onChange={handleChange} placeholder="Genre" />
-                        <input name="platform" value={formData.platform} onChange={handleChange} placeholder="Platform" />
-                        <input name="releaseYear" type="number" value={formData.releaseYear} onChange={handleChange} placeholder="Year" />
-                        <input name="developer" value={formData.developer} onChange={handleChange} placeholder="Developer" />
-                        <input name="rating" type="number" min="0" max="5" value={formData.rating} onChange={handleChange} placeholder="Rating (0-5)" />
-                        <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Description"></textarea>
+                        <div className="form-grid">
+                            <input name="title" value={formData.title} onChange={handleChange} placeholder="Title" required />
+                            <input name="genre" value={formData.genre} onChange={handleChange} placeholder="Genre" />
+                            <input name="platform" value={formData.platform} onChange={handleChange} placeholder="Platform" />
+                            <input name="releaseYear" type="number" value={formData.releaseYear} onChange={handleChange} placeholder="Year" />
+                            <input name="developer" value={formData.developer} onChange={handleChange} placeholder="Developer" />
+                            <input name="rating" type="number" min="0" max="5" value={formData.rating} onChange={handleChange} placeholder="Rating (0-5)" />
+                        </div>
+                        <textarea name="description" value={formData.description} onChange={handleChange} placeholder="Description" rows="4"></textarea>
                         
                         {/* Image Upload */}
-                        <div style={{ marginBottom: '1rem' }}>
-                            <label style={{ display: 'block', marginBottom: '0.5rem' }}>Game Cover Image</label>
+                        <div className="file-upload-container">
+                            <label>Game Cover Image</label>
                             <input 
                                 id="fileInput"
                                 type="file" 
                                 name="image" 
                                 accept="image/*" 
                                 onChange={handleChange} 
-                                style={{ padding: '0.5rem', background: 'none', border: 'none' }}
+                                className="file-input"
                             />
                         </div>
 
-                        <button type="submit">{editingId ? 'Update' : 'Add'} Game</button>
-                        <button type="button" onClick={handleCancel} style={{ marginLeft: '1rem', background: '#ccc', color: '#333' }}>Cancel</button>
+                        <div className="form-actions">
+                            <Button type="submit" variant="primary" className="btn-block">{editingId ? 'Update' : 'Add'} Game</Button>
+                            <Button type="button" onClick={handleCancel} variant="secondary" className="btn-block">Cancel</Button>
+                        </div>
                     </form>
                 </div>
             )}
@@ -145,7 +151,7 @@ const AdminDashboard = () => {
                             <tr>
                                 <th>Title</th>
                                 <th>Platform</th>
-                                <th>Actions</th>
+                                <th className="action-header">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -153,9 +159,9 @@ const AdminDashboard = () => {
                                 <tr key={game._id}>
                                     <td>{game.title}</td>
                                     <td>{game.platform}</td>
-                                    <td>
-                                        <button onClick={() => handleEdit(game)} className="details-btn" style={{ marginRight: '0.5rem' }}>Edit</button>
-                                        <button onClick={() => handleDelete(game._id)} className="remove-btn">Delete</button>
+                                    <td className="action-cell">
+                                        <Button onClick={() => handleEdit(game)} variant="secondary" className="edit-btn">Edit</Button>
+                                        <Button onClick={() => handleDelete(game._id)} variant="danger" className="delete-btn">Delete</Button>
                                     </td>
                                 </tr>
                             ))}

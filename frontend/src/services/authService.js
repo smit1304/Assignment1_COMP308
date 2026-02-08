@@ -1,4 +1,4 @@
-import api from '../../services/api';
+import api from './api';
 
 const register = (userData) => {
     return api.post('/users/register', userData);

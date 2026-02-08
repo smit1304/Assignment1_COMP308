@@ -17,21 +17,24 @@ const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
 
     return (
         <div className="game-card">
-            {game.imageUrl && (
-                <img 
-                    src={`${BASE_URL}${game.imageUrl}`} 
-                    alt={game.title} 
-                    style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '4px', marginBottom: '1rem' }} 
-                />
-            )}
+            <div className="game-image-container">
+                {game.imageUrl ? (
+                    <img 
+                        src={`${BASE_URL}${game.imageUrl}`} 
+                        alt={game.title} 
+                        className="game-image"
+                    />
+                ) : (
+                    <span className="game-image-placeholder">🎮</span>
+                )}
+            </div>
             <h3>{game.title}</h3>
             <p className="genre">{game.genre}</p>
             <p className="platform">{game.platform}</p>
-            <div className="actions" style={{ justifyContent: user && user.role === 'admin' ? 'center' : 'space-between' }}>
+            <div className={`actions ${user && user.role === 'admin' ? 'actions-admin' : ''}`}>
                 <Link 
                     to={user ? `/games/${game._id}` : '/login'} 
-                    className="details-btn"
-                    style={{ flex: user && user.role === 'admin' ? '0 1 50%' : '1' }}
+                    className={`details-btn ${user && user.role === 'admin' ? 'details-btn-admin' : ''}`}
                 >
                     Details
                 </Link>

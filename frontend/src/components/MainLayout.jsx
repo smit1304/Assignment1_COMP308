@@ -18,7 +18,9 @@ const MainLayout = () => {
             <AnimatedBackground />
             <nav className="navbar">
                 <div className="logo">
-                    <Link to="/">🎮 GameLib</Link>
+                    <Link to="/">
+                        <img src="/Game_Lib_Logo.png" alt="GameLib Logo" className="logo-img" />
+                    </Link>
                 </div>
                 <div className="nav-links">
                     <Link to="/">Library</Link>

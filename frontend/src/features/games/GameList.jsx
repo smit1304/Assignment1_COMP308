@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import gameService from './gameService';
+import gameService from '../../services/gameService';
 import GameCard from './GameCard';
 import { useAuth } from '../../context/AuthContext';
 import SearchBar from '../../components/SearchBar';
 
-const GameList = () => {
+const GameList = (props) => {
     const [games, setGames] = useState([]);
     const [myGames, setMyGames] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -50,10 +50,15 @@ const GameList = () => {
         }
     };
 
-    const filteredGames = games.filter(game => 
-        game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        game.genre.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredGames = games.filter(game => {
+        const matchesSearch = game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                              game.genre.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        if (props.view === 'collection') {
+            return matchesSearch && myGames.includes(game._id);
+        }
+        return matchesSearch;
+    });
 
     if (loading) return <div>Loading...</div>;
 

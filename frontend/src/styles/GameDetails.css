@@ -1,0 +1,39 @@
+/* Game Details Page */
+.game-details {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 2rem auto;
+    color: #333;
+}
+
+.game-details h1 {
+    color: var(--primary-color);
+    margin-top: 0;
+    font-size: 2.5rem;
+}
+
+.game-info {
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.game-info p {
+    margin: 0.8rem 0;
+}
+
+.game-info strong {
+    color: #555;
+    min-width: 120px;
+    display: inline-block;
+}
+
+.description {
+    background: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    margin-top: 1rem;
+}

@@ -10,6 +10,10 @@ import AdminDashboard from './features/admin/AdminDashboard';
 import './styles/App.css';
 import './styles/Navbar.css';
 import './styles/Forms.css';
+import './styles/GameCard.css';
+import './styles/SearchBar.css';
+import './styles/Admin.css';
+import './styles/GameDetails.css';
 
 import ProtectedRoute from './components/ProtectedRoute';
 
