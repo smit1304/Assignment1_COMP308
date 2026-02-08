@@ -95,3 +95,22 @@
     font-size: 0.8rem !important;
     padding: 0.4rem 0.8rem !important;
 }
+
+.thumbnail-cell {
+    width: 60px;
+    padding: 0.5rem !important;
+    text-align: center;
+}
+
+.game-thumbnail {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.game-thumbnail-placeholder {
+    font-size: 1.5rem;
+    opacity: 0.3;
+}

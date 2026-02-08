@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import gameService from '../../services/gameService';
 import Button from '../../components/common/Button';
 
@@ -30,6 +31,7 @@ const AdminDashboard = () => {
         e.preventDefault();
         
         const data = new FormData();
+        // ... (data fetching logic removed for brevity in replacement, but key is logic inside try/catch)
         data.append('title', formData.title);
         data.append('genre', formData.genre);
         data.append('platform', formData.platform);
@@ -40,11 +42,12 @@ const AdminDashboard = () => {
         if (formData.image) data.append('image', formData.image);
 
         try {
-            
             if (editingId) {
                 await gameService.updateGame(editingId, data);
+                toast.success('Game updated successfully!');
             } else {
                 await gameService.createGame(data);
+                toast.success('Game created successfully!');
             }
             setFormData({ title: '', genre: '', platform: '', releaseYear: '', developer: '', rating: '', description: '', image: null });
             setEditingId(null);
@@ -53,7 +56,7 @@ const AdminDashboard = () => {
             loadGames();
         } catch (err) {
             console.error(err);
-            alert('Operation failed');
+            toast.error('Operation failed. Please try again.');
         }
     };
     
@@ -71,6 +74,19 @@ const AdminDashboard = () => {
         setFormData({ title: '', genre: '', platform: '', releaseYear: '', developer: '', rating: '', description: '', image: null }); 
         document.getElementById('fileInput').value = '';
         setActiveTab('list');
+    };
+
+    const handleDelete = async (id) => {
+        if (window.confirm('Are you sure you want to delete this game?')) {
+            try {
+                await gameService.deleteGame(id);
+                toast.success('Game deleted successfully');
+                loadGames();
+            } catch (err) {
+                console.error("Failed to delete game", err);
+                toast.error("Failed to delete game");
+            }
+        }
     };
 
 
@@ -135,10 +151,11 @@ const AdminDashboard = () => {
 
             {activeTab === 'list' && (
                 <div className="admin-game-list">
-                    <h3>Game Library Management</h3>
+                    <h3>Manage Games</h3>
                     <table>
                         <thead>
                             <tr>
+                                <th>Image</th>
                                 <th>Title</th>
                                 <th>Platform</th>
                                 <th className="action-header">Actions</th>
@@ -147,6 +164,17 @@ const AdminDashboard = () => {
                         <tbody>
                             {games.map(game => (
                                 <tr key={game._id}>
+                                    <td className="thumbnail-cell">
+                                        {game.imageUrl ? (
+                                            <img 
+                                                src={`${import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace('/api', '') : 'http://localhost:4000'}${game.imageUrl}`} 
+                                                alt={game.title} 
+                                                className="game-thumbnail"
+                                            />
+                                        ) : (
+                                            <span className="game-thumbnail-placeholder">🎮</span>
+                                        )}
+                                    </td>
                                     <td>{game.title}</td>
                                     <td>{game.platform}</td>
                                     <td className="action-cell">
