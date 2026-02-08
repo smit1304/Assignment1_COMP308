@@ -45,9 +45,12 @@ The backend handles the API, database connection, and authentication.
 3.  **Environment Variables**:
     Create a `.env` file in the `backend` directory with the following variables:
     ```env
-    PORT=4000
-    MONGO_URI=mongodb://localhost:27017/game-library
-    JWT_SECRET=your_super_secret_key_here
+    NODE_ENV=DEVELOPMENT_OR_PRODUCTION
+    FRONTEND_URL=YOUR_LOCAL_HOST_URL
+    MONGODB_URI=MONGODB_CONN_STRING
+    DB_NAME=DB_NAME
+    JWT_SECRET=YOUR_SECRET_KEY
+    PORT=YOUR_PORT_NUMBER
     ```
     *(Note: Replace `MONGO_URI` with your connection string if different)*
 
