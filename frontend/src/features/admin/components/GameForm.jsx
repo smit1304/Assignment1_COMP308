@@ -61,7 +61,7 @@ const GameForm = ({ initialData, onSubmit, onCancel }) => {
                     <input name="platform" value={formData.platform} onChange={handleChange} placeholder="Platform" />
                     <input name="releaseYear" type="number" value={formData.releaseYear} onChange={handleChange} placeholder="Year" />
                     <input name="developer" value={formData.developer} onChange={handleChange} placeholder="Developer" />
-                    <input name="rating" type="number" min="0" max="5" value={formData.rating} onChange={handleChange} placeholder="Rating (0-5)" />
+                    <input name="rating" type="number" min="0" max="5" step="0.1" value={formData.rating} onChange={handleChange} placeholder="Rating (0-5)" />
                 </div>
 
                 {/* Game description */}

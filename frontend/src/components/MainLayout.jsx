@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import AnimatedBackground from '../features/three/AnimatedBackground';
+import AnimatedBackground from '../components/three/AnimatedBackground';
 import Button from '../components/common/Button';
 
 // Main application layout with navigation and background
