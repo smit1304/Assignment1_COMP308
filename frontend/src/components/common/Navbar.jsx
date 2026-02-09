@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import '../../styles/navbar.css';
+import Button from './Button'; // Import Button
+
+// ... inside Navbar component ...
+                        <Button onClick={handleLogout} variant="danger" className="logout-btn">Logout</Button>
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -25,7 +25,7 @@ const Navbar = () => {
                              <Link to="/admin/add" style={{ margin: '0 10px', color: '#ff7675' }}>Add Game</Link>
                         )}
                         <span style={{ margin: '0 10px', color: '#a29bfe' }}>{user.username}</span>
-                        <button onClick={handleLogout} className="btn btn-danger">Logout</button>
+                        <Button onClick={handleLogout} variant="danger" className="logout-btn">Logout</Button>
                     </>
                 ) : (
                     <>

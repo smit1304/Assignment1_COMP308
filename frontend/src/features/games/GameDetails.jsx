@@ -3,8 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import gameService from '../../services/gameService';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../../components/common/Button';
+import ThreeGameCard from '../../components/three/ThreeGameCard';
 
-// Page displaying detailed information about a single game
+
 const GameDetails = () => {
     const { id } = useParams(); // Game ID from route
     const [game, setGame] = useState(null);
@@ -12,7 +13,10 @@ const GameDetails = () => {
     const { user } = useAuth();
     const navigate = useNavigate();
 
-    // Fetch game details on component mount
+    const [imageValid, setImageValid] = useState(false);
+    const [imageChecked, setImageChecked] = useState(false);
+
+    // Fetch game details
     useEffect(() => {
         const fetchGame = async () => {
             try {
@@ -28,12 +32,31 @@ const GameDetails = () => {
         fetchGame();
     }, [id, navigate]);
 
-    if (loading) return <div>Loading...</div>;
-    if (!game) return <div>Game not found</div>;
-
     const BASE_URL = import.meta.env.VITE_API_URL
         ? import.meta.env.VITE_API_URL.replace('/api', '')
         : 'http://localhost:4000';
+
+    // Validate Image
+    useEffect(() => {
+        if (!game || !game.imageUrl) {
+            setImageChecked(true);
+            return;
+        }
+
+        const img = new Image();
+        img.src = `${BASE_URL}${game.imageUrl}`;
+        img.onload = () => {
+            setImageValid(true);
+            setImageChecked(true);
+        };
+        img.onerror = () => {
+            setImageValid(false);
+            setImageChecked(true);
+        };
+    }, [game, BASE_URL]);
+
+    if (loading) return <div>Loading...</div>;
+    if (!game) return <div>Game not found</div>;
 
     return (
         <div className="game-details">
@@ -58,17 +81,13 @@ const GameDetails = () => {
                     <p className="description">{game.description}</p>
                 </div>
 
-                {/* Game cover image */}
+                {/* Game cover image - 3D Scene if valid, else placeholder */}
                 <div className="game-image-column">
-                    {game.imageUrl ? (
-                        <img 
-                            src={`${BASE_URL}${game.imageUrl}`} 
-                            alt={game.title} 
-                            className="detail-image"
-                        />
+                    {imageChecked && imageValid ? (
+                         <ThreeGameCard imageUrl={`${BASE_URL}${game.imageUrl}`} zoomable={true} />
                     ) : (
                         <div className="detail-placeholder">
-                            <span>🎮</span>
+                            <span>{imageChecked && !imageValid ? '⚠️' : '🎮'}</span>
                         </div>
                     )}
                 </div>
