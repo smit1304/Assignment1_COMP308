@@ -66,10 +66,19 @@ const GameDetails = () => {
                 <Button onClick={() => navigate(-1)} variant="secondary" className="back-btn">
                     Back to Library
                 </Button>
-            </div>
-            
+            </div>    
             {/* Main content */}
             <div className="game-content">
+                {/* Game cover image - 3D Scene if valid, else placeholder */}
+                <div className="game-image-column">
+                    {imageChecked && imageValid ? (
+                         <ThreeGameCard imageUrl={`${BASE_URL}${game.imageUrl}`} zoomable={false} />
+                    ) : (
+                        <div className="detail-placeholder">
+                            <span>{imageChecked && !imageValid ? '⚠️' : '🎮'}</span>
+                        </div>
+                    )}
+                </div>
                 {/* Game information */}
                 <div className="game-info">
                     <p><strong>Genre:</strong> {game.genre}</p>
@@ -77,20 +86,12 @@ const GameDetails = () => {
                     <p><strong>Release Year:</strong> {game.releaseYear}</p>
                     <p><strong>Developer:</strong> {game.developer}</p>
                     <p><strong>Rating:</strong> {game.rating}/5</p>
-                    <p><strong>Description:</strong></p>
-                    <p className="description">{game.description}</p>
-                </div>
-
-                {/* Game cover image - 3D Scene if valid, else placeholder */}
-                <div className="game-image-column">
-                    {imageChecked && imageValid ? (
-                         <ThreeGameCard imageUrl={`${BASE_URL}${game.imageUrl}`} zoomable={true} />
-                    ) : (
-                        <div className="detail-placeholder">
-                            <span>{imageChecked && !imageValid ? '⚠️' : '🎮'}</span>
-                        </div>
-                    )}
-                </div>
+                </div>         
+            </div>
+            {/* Full width description */}
+            <div className="game-description-section">
+                <h3>Description</h3>
+                <p className="description">{game.description}</p>
             </div>
         </div>
     );

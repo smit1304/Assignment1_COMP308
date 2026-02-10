@@ -37,7 +37,18 @@ const GameCard = ({ game, onAdd, onRemove, inCollection }) => {
             <div className="game-card-content">
                 <div>
                     <h3>{game.title}</h3>
-                    <p className="genre">{game.genre}</p>
+                    
+                    {/* Genre Tags */}
+                    <div className="genre-container">
+                        {game.genre && game.genre.split(',').slice(0, 3).map((g, index) => (
+                            <span key={index} className="genre-tag">
+                                {g.trim()}
+                            </span>
+                        ))}
+                        {game.genre && game.genre.split(',').length > 3 && (
+                            <span className="genre-tag-more">+{game.genre.split(',').length - 3}</span>
+                        )}
+                    </div>
                     <p className="platform">{game.platform}</p>
                 </div>
                 

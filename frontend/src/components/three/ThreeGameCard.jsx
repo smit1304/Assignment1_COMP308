@@ -83,7 +83,7 @@ const InteractiveCard = ({ url, zoomable }) => {
 
 const ThreeGameCard = ({ imageUrl, zoomable = false }) => {
     return (
-        <div style={{ width: '100%', height: '100%', minHeight: '100%' }}>
+        <div style={{ width: '100%', height: '50%', minHeight: '100%' }}>
             <Canvas dpr={[1, 2]} camera={{ position: [0, 0, 5], fov: 45 }}>
                 <ambientLight intensity={0.8} />
                 <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={0.5} />

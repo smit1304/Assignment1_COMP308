@@ -21,8 +21,9 @@
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     border: 1px solid rgba(255,255,255,0.05); /* Subtle rim effect */
     display: flex;
+    display: flex;
     flex-direction: column;
-    height: 450px; /* Tall card for 3D effect */
+    height: 500px; /* Increased height to preventing cramping */
     transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s;
 }
 
@@ -37,7 +38,7 @@
    3D Image Container
    ========================= */
 .game-image-container {
-    height: 300px; /* Prominent visual area */
+    height: 250px; /* Reduced height to give more space to content */
     width: 100%;
     position: relative;
     z-index: 1;
@@ -80,24 +81,52 @@
     font-weight: 700;
     letter-spacing: 0.5px;
     text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    
+    /* Truncate Title */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .game-card p {
     margin: 0.5rem 0;
     font-size: 0.9rem;
     color: #b0b0cc;
+    
+    /* Truncate Platform/Text */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Genre badge */
-.genre {
+/* Genre Container */
+.genre-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+    height: 32px; /* Fixed height for consistency (approx 1 row of tags) */
+    overflow: hidden; /* Hide extra tags if they wrap */
+}
+
+/* Individual Genre Tag */
+.genre-tag {
     display: inline-block;
     background: rgba(79,195,247,0.15);
-    color: #4fc3f7 !important;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem !important;
+    color: #4fc3f7;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     border: 1px solid rgba(79,195,247,0.3);
+    white-space: nowrap;
+}
+
+/* More tag (+X) */
+.genre-tag-more {
+    font-size: 0.75rem;
+    color: #b0b0cc;
+    align-self: center;
 }
 
 /* =========================
